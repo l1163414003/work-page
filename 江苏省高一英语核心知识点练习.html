@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>江苏省高一英语核心知识点练习 💪</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px 40px;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(102,126,234,0.3);
+  }
+  .header h1 { font-size: 28px; margin-bottom: 8px; }
+  .header p { opacity: 0.9; font-size: 15px; line-height: 1.8; }
+
+  /* Progress */
+  .progress-wrap {
+    background: white;
+    border-radius: 16px;
+    padding: 20px 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    position: sticky;
+    top: 15px;
+    z-index: 100;
+  }
+  .progress-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px;
+    font-size: 15px;
+  }
+  .progress-header .count { font-weight: 700; color: #667eea; }
+  .progress-bar {
+    height: 10px;
+    background: #e8e8e8;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .progress-bar .fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+  }
+
+  /* Topic Card */
+  .topic {
+    background: white;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: box-shadow 0.2s;
+  }
+  .topic:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+  .topic-header {
+    background: linear-gradient(135deg, #667eea15, #764ba215);
+    padding: 18px 25px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .topic-header .num {
+    display: inline-block;
+    width: 32px; height: 32px;
+    line-height: 32px; text-align: center;
+    background: #667eea;
+    color: white;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 700;
+    margin-right: 12px;
+  }
+  .topic-header .title { font-size: 17px; font-weight: 700; flex: 1; }
+  .topic-header .status {
+    font-size: 13px;
+    color: #999;
+    background: #f5f5f5;
+    padding: 3px 12px;
+    border-radius: 20px;
+  }
+  .topic-header .status.done { background: #e8f5e9; color: #43a047; }
+  .topic-body { padding: 20px 25px; display: none; }
+  .topic-body.open { display: block; }
+
+  /* Insight */
+  .insight {
+    background: linear-gradient(135deg, #fff8e1, #fff3e0);
+    border-left: 4px solid #ffb300;
+    padding: 14px 18px;
+    border-radius: 0 10px 10px 0;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .insight strong { color: #e65100; }
+
+  /* Question */
+  .q-item {
+    padding: 16px 0;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .q-item:last-child { border-bottom: none; }
+  .q-text {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    line-height: 1.7;
+  }
+  .q-text .q-num {
+    display: inline-block;
+    width: 26px; height: 26px;
+    line-height: 26px; text-align: center;
+    background: #f0f2ff;
+    color: #667eea;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 8px;
+  }
+  .options { display: flex; flex-wrap: wrap; gap: 8px; }
+  .opt {
+    padding: 8px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.15s;
+    background: white;
+    color: #333;
+    user-select: none;
+  }
+  .opt:hover { border-color: #667eea; background: #f8f9ff; }
+  .opt.selected {
+    border-color: #667eea;
+    background: #667eea;
+    color: white;
+  }
+  .opt.correct-show {
+    border-color: #43a047;
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+  .opt.wrong-show {
+    border-color: #e53935;
+    background: #ffebee;
+    color: #c62828;
+  }
+  .q-feedback {
+    font-size: 13px;
+    margin-top: 6px;
+    display: none;
+  }
+  .q-feedback.show { display: block; }
+  .q-feedback.correct { color: #43a047; }
+  .q-feedback.wrong { color: #e53935; }
+
+  /* Answer Section */
+  .answer-section {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    margin-top: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    text-align: center;
+  }
+  .answer-section.locked .answer-content { display: none; }
+  .answer-section.unlocked .answer-lock { display: none; }
+  .answer-lock {
+    padding: 30px 0;
+  }
+  .answer-lock .lock-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+  }
+  .answer-lock p {
+    font-size: 15px;
+    color: #888;
+    margin-bottom: 5px;
+  }
+  .answer-lock .progress-text {
+    font-size: 22px;
+    font-weight: 700;
+    color: #667eea;
+  }
+
+  /* Answer Content */
+  .answer-content { text-align: left; }
+  .answer-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #667eea;
+    font-size: 22px;
+  }
+  .ans-topic {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #fafafa;
+    border-radius: 12px;
+    border-left: 4px solid #667eea;
+  }
+  .ans-topic h3 {
+    font-size: 15px;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  .ans-topic .ans-row {
+    display: inline-block;
+    margin: 3px 2px;
+    padding: 2px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    background: #f0f0f0;
+  }
+  .ans-topic .ans-row .qref { color: #888; }
+  .ans-topic .ans-row .ans-letter { font-weight: 700; color: #43a047; }
+  .ans-explanation {
+    font-size: 13px;
+    color: #666;
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: #f9f9ff;
+    border-radius: 8px;
+    line-height: 1.8;
+  }
+
+  /* Sticky Answer Button */
+  .goto-answer-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .goto-answer-btn:hover { opacity: 0.9; }
+  .goto-answer-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  /* Reset button */
+  .reset-btn {
+    display: inline-block;
+    padding: 8px 20px;
+    background: transparent;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #888;
+    transition: all 0.2s;
+    margin-top: 15px;
+  }
+  .reset-btn:hover { border-color: #e53935; color: #e53935; }
+
+  @media (max-width: 600px) {
+    body { padding: 12px; }
+    .header { padding: 20px; }
+    .header h1 { font-size: 22px; }
+    .topic-header { padding: 14px 16px; }
+    .topic-body { padding: 14px 16px; }
+    .opt { padding: 7px 13px; font-size: 13px; }
+    .options { gap: 6px; }
+    .answer-section { padding: 20px; }
+    .progress-wrap { padding: 14px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>📚 江苏省高一英语核心知识点练习</h1>
+    <p>译林版 · 基础巩固 · 共 10 大模块 · <strong>100 道题</strong></p>
+    <p style="font-size:13px; opacity:0.8; margin-top:6px;">💡 做完所有题目才能查看答案哦，加油～</p>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-header">
+      <span>📊 总体进度</span>
+      <span><span class="count" id="doneCount">0</span> / <span id="totalCount">100</span> 题已答</span>
+    </div>
+    <div class="progress-bar">
+      <div class="fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- Topics Container -->
+  <div id="topicsContainer"></div>
+
+  <!-- Go to Answer Button -->
+  <button class="goto-answer-btn" id="gotoAnswerBtn" disabled>🔒 完成全部 100 题后查看答案</button>
+
+  <!-- Answer Section -->
+  <div class="answer-section locked" id="answerSection">
+    <div class="answer-lock" id="answerLock">
+      <div class="lock-icon">🔒</div>
+      <p>答案已被锁定</p>
+      <p class="progress-text" id="lockProgress">0 / 100</p>
+      <p style="font-size:13px; color:#aaa;">请先完成所有题目，再来查看答案与解析吧～</p>
+    </div>
+    <div class="answer-content" id="answerContent">
+      <h2>✅ 答案与解析</h2>
+      <div id="answersList"></div>
+      <button class="reset-btn" onclick="resetAll()">🔄 重新开始</button>
+    </div>
+  </div>
+
+  <div style="text-align:center; padding: 20px 0 10px; color: #aaa; font-size:13px;">
+    Made with ❤️ · 高一英语 · 译林版基础巩固
+  </div>
+</div>
+
+<script>
+// ============================================================
+// 数据：10 大知识点 × 10 题 = 100 题
+// ============================================================
+const DATA = [
+  // ---- 1. 时态与语态 ----
+  {
+    topic: '时态与语态',
+    insight: '★ 时态看"时间状语"和"语境"，语态看"主语与动词的关系"：<br>• <strong>现在完成时</strong>：already / yet / ever / never / since / for / so far → have/has + done<br>• <strong>一般过去时</strong>：yesterday / ...ago / last... / in 2023 → did<br>• <strong>被动语态</strong>：be + done，注意时态体现在 be 上（is built / was built / has been built）<br>• <strong>进行时</strong>：now / at this moment / Listen! / Look! → be + doing',
+    questions: [
+      { q: 'My brother ______ a teacher since 2019.', o: ['is', 'was', 'has been', 'will be'], a: 2, e: 'since 2019 → 现在完成时标志，用 has been。' },
+      { q: 'Listen! Someone ______ in the next room.', o: ['sings', 'is singing', 'sang', 'has sung'], a: 1, e: 'Listen! → 提示动作正在发生，用现在进行时 is singing。' },
+      { q: 'The bridge ______ last year.', o: ['built', 'was built', 'is built', 'builds'], a: 1, e: 'last year → 过去时间，桥是"被建" → 一般过去时被动 was built。' },
+      { q: 'I ______ my homework yet. Can I watch TV now?', o: ["don't finish", "didn't finish", "haven't finished", "won't finish"], a: 2, e: 'yet → 完成时标志，haven\'t finished 表示"还没做完"。' },
+      { q: 'We ______ the museum tomorrow if it doesn\'t rain.', o: ['visit', 'visited', 'will visit', 'have visited'], a: 2, e: 'tomorrow + if 条件句（主将从现）→ 主句用 will visit。' },
+      { q: 'She ______ TV when I called her last night.', o: ['watches', 'watched', 'was watching', 'has watched'], a: 2, e: 'when I called （一个过去动作）→ 另一个动作"正在发生"→ 过去进行时 was watching。' },
+      { q: 'By the time he arrived, the meeting already ______.', o: ['starts', 'started', 'had started', 'has started'], a: 2, e: '"到达之前会议已经开始"→ 过去的过去 → 过去完成时 had started。' },
+      { q: 'English ______ widely around the world.', o: ['speaks', 'is spoken', 'spoke', 'was spoken'], a: 1, e: '客观事实 → 一般现在时被动 is spoken。' },
+      { q: 'I ______ him since we were children.', o: ['know', 'knew', 'have known', 'had known'], a: 2, e: 'since + 从句 → 现在完成时 have known。' },
+      { q: 'The letter ______ in English yesterday.', o: ['wrote', 'is written', 'was written', 'writes'], a: 2, e: 'yesterday → 过去，信"被写"→ 一般过去时被动 was written。' }
+    ]
+  },
+
+  // ---- 2. 定语从句 ----
+  {
+    topic: '定语从句',
+    insight: '★ 先行词是人还是物？关系词在从句中作什么成分？<br>• <strong>人</strong>：who（主/宾）/ whom（宾）/ whose（所有格）<br>• <strong>物</strong>：which / that<br>• <strong>时间</strong>：when | <strong>地点</strong>：where | <strong>原因</strong>：why<br>• <strong>介词+关系代词</strong>：介词 + which（物）/ whom（人）',
+    questions: [
+      { q: 'The man ______ lives next door is a doctor.', o: ['which', 'who', 'whom', 'whose'], a: 1, e: '先行词 the man（人），从句缺主语 → 用 who。' },
+      { q: 'This is the book ______ I bought yesterday.', o: ['who', 'which', 'whose', 'whom'], a: 1, e: '先行词 the book（物），从句缺宾语 → 用 which。' },
+      { q: 'The girl ______ mother is a teacher is my classmate.', o: ['who', 'which', 'whose', 'whom'], a: 2, e: '先行词 the girl，从句缺定语（mother前面）→ 用 whose。' },
+      { q: 'I still remember the day ______ we first met.', o: ['which', 'when', 'where', 'why'], a: 1, e: '先行词 the day（时间），从句缺时间状语 → 用 when。' },
+      { q: 'This is the school ______ I studied three years ago.', o: ['which', 'that', 'where', 'when'], a: 2, e: '先行词 the school（地点），从句缺地点状语 → 用 where。' },
+      { q: 'He is the person ______ I want to talk to.', o: ['who', 'whose', 'which', 'what'], a: 0, e: '先行词 the person（人），从句缺宾语 → 用 who（口语中可代替 whom）。' },
+      { q: 'I have a friend ______ father is a famous writer.', o: ['who', 'which', 'whose', 'whom'], a: 2, e: '从句缺定语修饰 father → 用 whose。' },
+      { q: 'This is the reason ______ he was late.', o: ['which', 'that', 'why', 'where'], a: 2, e: '先行词 the reason（原因）→ 用 why。' },
+      { q: 'The house ______ windows are broken is empty.', o: ['which', 'that', 'whose', 'who'], a: 2, e: '从句缺定语修饰 windows → 用 whose。' },
+      { q: 'Have you seen the film ______ we talked about?', o: ['who', 'whom', 'which', 'whose'], a: 2, e: '先行词 the film（物），从句缺 about 的宾语 → 用 which。' }
+    ]
+  },
+
+  // ---- 3. 名词性从句 ----
+  {
+    topic: '名词性从句',
+    insight: '★ 名词性从句包括：主语从句、宾语从句、表语从句、同位语从句。<br>• <strong>连接词</strong>：that（无意义）/ whether / if（是否）/ 疑问词（what, who, which, when, where, why, how）<br>• <strong>语序</strong>：从句永远用<strong>陈述语序</strong>（主+谓），不能倒装！<br>• 区别 that 与 what：that 不作成分，what 作主/宾/表。',
+    questions: [
+      { q: '______ he will come or not is still unknown.', o: ['If', 'Whether', 'That', 'What'], a: 1, e: '主语从句在句首，后面有 or not → 只能用 Whether。' },
+      { q: 'I believe ______ he is honest.', o: ['if', 'whether', 'that', 'what'], a: 2, e: 'believe 后的宾语从句无误，用 that 连接（可省略）。' },
+      { q: 'Can you tell me ______ the nearest hospital is?', o: ['what', 'where', 'which', 'that'], a: 1, e: '从句缺地点状语 → 用 where，注意语序为陈述语序。' },
+      { q: 'The problem is ______ we don\'t have enough time.', o: ['what', 'that', 'whether', 'which'], a: 1, e: '表语从句不缺成分，用 that 连接。' },
+      { q: 'I don\'t know ______ he said at the meeting.', o: ['that', 'whether', 'what', 'which'], a: 2, e: '宾语从句，said 缺宾语 → 用 what。' },
+      { q: '______ he passed the exam made us happy.', o: ['What', 'That', 'Whether', 'If'], a: 1, e: '主语从句不缺少成分，用 That 引导（位于句首不可省略）。' },
+      { q: 'I wonder ______ she will accept our invitation.', o: ['that', 'what', 'whether', 'which'], a: 2, e: 'wonder 表"想知道是否"→ 用 whether。' },
+      { q: 'This is ______ I want to say.', o: ['that', 'what', 'whether', 'which'], a: 1, e: '表语从句，say 缺宾语 → 用 what。' },
+      { q: 'The news ______ our team won was exciting.', o: ['that', 'what', 'which', 'whether'], a: 0, e: '同位语从句说明 news 的内容，不缺成分 → 用 that。' },
+      { q: 'Do you know ______ the meeting will begin?', o: ['that', 'what', 'when', 'which'], a: 2, e: '从句缺时间状语 → 用 when。' }
+    ]
+  },
+
+  // ---- 4. 状语从句 ----
+  {
+    topic: '状语从句',
+    insight: '★ 状语从句种类多，重点记"<strong>主将从现</strong>"和"<strong>连词辨析</strong>"：<br>• <strong>时间</strong>：when / while / as / before / after / until / since<br>• <strong>条件</strong>：if / unless（=if...not）/ as long as<br>• <strong>原因</strong>：because / since / as<br>• <strong>让步</strong>：although / though / even if（不能与 but 连用！）',
+    questions: [
+      { q: 'I\'ll wait here ______ you come back.', o: ['when', 'while', 'until', 'after'], a: 2, e: '"等到你回来"→ 用 until。' },
+      { q: 'We won\'t go to the park ______ it rains tomorrow.', o: ['if', 'unless', 'when', 'because'], a: 0, e: '"如果明天下雨就不去"→ 条件句 if。' },
+      { q: '______ he was tired, he kept working.', o: ['Because', 'Although', 'If', 'When'], a: 1, e: '"虽然累但继续工作"→ 转折让步，用 Although。' },
+      { q: 'I\'ll call you ______ I arrive at the station.', o: ['while', 'until', 'as soon as', 'since'], a: 2, e: '"一到就打电话"→ as soon as。' },
+      { q: 'She didn\'t go to school ______ she was ill.', o: ['because', 'although', 'so', 'but'], a: 0, e: '"因为生病所以没上学"→ 原因从句用 because。' },
+      { q: 'We\'ll go for a walk ______ it is fine tomorrow.', o: ['if', 'unless', 'though', 'while'], a: 0, e: '条件 → 如果天气好就去散步，用 if。' },
+      { q: 'Please read the book ______ you are free.', o: ['when', 'until', 'since', 'after'], a: 0, e: '"有空的时候读书"→ 时间状语用 when。' },
+      { q: 'You won\'t pass the exam ______ you study hard.', o: ['if', 'unless', 'because', 'when'], a: 1, e: '"除非你努力学习"→ unless。' },
+      { q: '______ there is life, there is hope.', o: ['When', 'While', 'Where', 'Although'], a: 2, e: '"哪里有生命，哪里就有希望"，地点状语从句用 Where。' },
+      { q: 'He is ______ a young boy ______ he can\'t lift the box.', o: ['so...that', 'such...that', 'too...to', 'enough...to'], a: 1, e: '"如此小的男孩以至于抬不动"→ such + n. + that。' }
+    ]
+  },
+
+  // ---- 5. 非谓语动词 ----
+  {
+    topic: '非谓语动词',
+    insight: '★ 非谓语动词包括：不定式(to do)、动名词(doing)、分词(doing / done)<br>• <strong>不定式</strong>：表目的、将来、具体某次动作<br>• <strong>动名词</strong>：作主/宾/表，表习惯、一般性动作<br>• <strong>现在分词</strong>：主动进行 | <strong>过去分词</strong>：被动完成<br>• 常考搭配：enjoy / suggest / mind + doing；want / decide / hope + to do',
+    questions: [
+      { q: 'I enjoy ______ to music in my free time.', o: ['listen', 'to listen', 'listening', 'listened'], a: 2, e: 'enjoy + doing，固定搭配。"喜欢听音乐"。' },
+      { q: 'They decided ______ to the museum.', o: ['go', 'to go', 'going', 'went'], a: 1, e: 'decide + to do。"决定去博物馆"。' },
+      { q: '______ more vegetables is good for your health.', o: ['Eat', 'To eating', 'Eating', 'Ate'], a: 2, e: '动名词作主语，表一般性动作。"吃更多蔬菜"。' },
+      { q: 'I saw him ______ basketball on the playground.', o: ['play', 'to play', 'playing', 'played'], a: 2, e: 'see + sb. + doing（看到正在做）。"看到他正在打篮球"。' },
+      { q: 'The ______ boy is my little brother.', o: ['cry', 'to cry', 'crying', 'cried'], a: 2, e: '现在分词作定语表主动进行。"正在哭的男孩"。' },
+      { q: 'He wants ______ English well.', o: ['learn', 'to learn', 'learning', 'learned'], a: 1, e: 'want + to do。"想要学好英语"。' },
+      { q: 'The window is broken. It needs ______.', o: ['repair', 'to repair', 'repairing', 'repaired'], a: 2, e: 'need + doing 表被动含义 = need to be done。"窗户需要修理"。' },
+      { q: 'Would you mind ______ the window?', o: ['open', 'to open', 'opening', 'opened'], a: 2, e: 'mind + doing。"你介意开窗吗？"→ 介意的是"开"这个行为。' },
+      { q: 'I\'m looking forward to ______ from you.', o: ['hear', 'hearing', 'heard', 'be heard'], a: 1, e: 'look forward to + doing（to 是介词！）。"期待收到你的来信"。' },
+      { q: '______ from the top of the hill, the city looks beautiful.', o: ['See', 'Seeing', 'Seen', 'To see'], a: 2, e: '过去分词作状语，表被动。"从山顶看（被看）"。' }
+    ]
+  },
+
+  // ---- 6. 情态动词 ----
+  {
+    topic: '情态动词',
+    insight: '★ 情态动词表"情态"，不表时态，后接<strong>动词原形</strong>。<br>• <strong>推测</strong>：must（一定）→ can\'t（不可能）→ may/might（可能）<br>• <strong>需要</strong>：need（需要）/ needn\'t（不必）= don\'t have to<br>• <strong>必须</strong>：must（必须，主观）/ have to（不得不，客观）<br>• must 开头的一般疑问句，否定回答用 needn\'t 或 don\'t have to。',
+    questions: [
+      { q: 'You ______ finish your homework before you watch TV.', o: ['can', 'may', 'must', 'need'], a: 2, e: '"你必须先完成作业"→ 表主观必须，用 must。' },
+      { q: '______ I use your pen?', o: ['Must', 'Need', 'May', 'Should'], a: 2, e: '"我可以借用你的笔吗？"→ 表请求许可，用 May。' },
+      { q: 'She ______ be at home now. I saw her leave just now.', o: ['must', 'can\'t', 'may', 'needn\'t'], a: 1, e: '"看到她刚离开，不可能在家"→ 否定推测用 can\'t。' },
+      { q: 'You ______ worry about the exam. You\'ve prepared well.', o: ['mustn\'t', 'can\'t', 'needn\'t', 'shouldn\'t'], a: 2, e: '"不必担心"→ needn\'t = don\'t have to。' },
+      { q: 'It\'s raining outside. You ______ take an umbrella.', o: ['can', 'may', 'should', 'needn\'t'], a: 2, e: '"应该带伞"→ 建议用 should。' },
+      { q: 'The lights are on. He ______ be in the room.', o: ['can\'t', 'must', 'need', 'should'], a: 1, e: '灯亮着 → "一定在房间里"→ 肯定推测用 must。' },
+      { q: '______ I go now? — No, you needn\'t.', o: ['Must', 'May', 'Can', 'Will'], a: 0, e: '否定回答用 needn\'t → 问句是 Must（"必须现在走吗？"）。' },
+      { q: 'We ______ cross the street when the light is red.', o: ['mustn\'t', 'needn\'t', 'don\'t have to', 'can'], a: 0, e: '红灯禁止过马路 → mustn\'t（禁止）。' },
+      { q: 'He ______ speak three languages.', o: ['can', 'must', 'need', 'should'], a: 0, e: '"会讲三种语言"→ 表能力，用 can。' },
+      { q: 'You don\'t look well. You ______ see a doctor.', o: ['can', 'may', 'must', 'had better'], a: 3, e: '"你最好去看医生"→ had better（最好）。' }
+    ]
+  },
+
+  // ---- 7. 虚拟语气 ----
+  {
+    topic: '虚拟语气',
+    insight: '★ 虚拟语气表"与事实相反的假设"。<br>• <strong>与现在相反</strong>：if 过去式(be用were) → would/could + do<br>• <strong>与过去相反</strong>：if had done → would/could + have done<br>• <strong>与将来相反</strong>：if were to / should do → would + do<br>• 其他常考：wish + 过去式/过去完成式；suggest/advise + that (should) do',
+    questions: [
+      { q: 'If I ______ a bird, I would fly to you.', o: ['am', 'was', 'were', 'be'], a: 2, e: '与现在相反假设（我不是鸟）→ be动词统一用 were。' },
+      { q: 'If I had known the truth, I ______ you.', o: ['will tell', 'would tell', 'would have told', 'told'], a: 2, e: '与过去相反（没知道真相）→ 主句用 would have done。' },
+      { q: 'I wish I ______ younger.', o: ['am', 'was', 'were', 'will be'], a: 2, e: 'wish 后接与现在相反 → be 用 were。"我希望更年轻"。' },
+      { q: 'He suggested that we ______ early tomorrow.', o: ['start', 'started', 'would start', 'starting'], a: 0, e: 'suggest + that从句用(should) + do。"建议明天早点出发"。' },
+      { q: 'If it ______ tomorrow, we would stay at home.', o: ['will rain', 'rained', 'rains', 'would rain'], a: 1, e: '与将来相反假设（不太可能明天下雨）→ 从句用一般过去式。' },
+      { q: 'I wish I ______ harder for the exam.', o: ['study', 'studied', 'had studied', 'would study'], a: 2, e: 'wish 与过去相反（以前没努力）→ had studied。' },
+      { q: 'She treats me as if I ______ her sister.', o: ['am', 'was', 'were', 'are'], a: 2, e: 'as if 与现在相反 → 用 were。"她待我好像我是她妹妹"。' },
+      { q: 'If I ______ you, I would accept the offer.', o: ['am', 'was', 'were', 'be'], a: 2, e: '与现在相反假设（我不是你）→ 用 were。' },
+      { q: 'The teacher insisted that everyone ______ on time.', o: ['is', 'be', 'was', 'being'], a: 1, e: 'insist + that从句用(should) + do。"坚持要每个人都准时"。' },
+      { q: 'If she had taken my advice, she ______ such a mistake.', o: ["wouldn't make", "won't make", "wouldn't have made", "doesn't make"], a: 2, e: '与过去相反（没听建议）→ wouldn\'t have made。' }
+    ]
+  },
+
+  // ---- 8. 倒装与强调 ----
+  {
+    topic: '倒装与强调',
+    insight: '★ <strong>部分倒装</strong>：助动词/情态动词提到主语前。<br>• 否定词在句首：never / seldom / hardly / not only / no sooner...than<br>• only + 状语在句首<br>• So / Neither / Nor 开头表示"也一样"<br>• <strong>强调句</strong>：It is/was + 被强调部分 + that/who + 其余部分',
+    questions: [
+      { q: 'Never ______ such a beautiful sunset before.', o: ['I have seen', 'have I seen', 'I saw', 'did I see'], a: 1, e: 'Never 在句首 → 部分倒装 + before 表完成 → have I seen。' },
+      { q: 'Only after finishing homework ______ go out to play.', o: ['he can', 'can he', 'he could', 'he did'], a: 1, e: 'Only + 状语在句首 → 部分倒装 → can he。' },
+      { q: '— I like English. — So ______ I.', o: ['am', 'do', 'like', 'have'], a: 1, e: '"我也喜欢"→ So + 助动词 + 主语，I like 的助动词是 do。' },
+      { q: 'Hardly ______ when the phone rang.', o: ['I sat down', 'had I sat down', 'I had sat down', 'did I sit down'], a: 1, e: 'Hardly...when → hardly 在句首用倒装，坐好发生在电话响之前 → 过去完成时。' },
+      { q: 'It was yesterday ______ I met him in the street.', o: ['when', 'that', 'which', 'who'], a: 1, e: '强调句 It was + 时间 + that...，强调"昨天"。' },
+      { q: 'Not only ______ smart, but also he is kind.', o: ['he is', 'is he', 'he does', 'does he'], a: 1, e: 'Not only 在句首连接句子 → 部分倒装 is he。' },
+      { q: '______ can you succeed without hard work.', o: ['Only', 'So', 'Never', 'Such'], a: 2, e: '"不努力永远无法成功"，否定词 Never 在句首引导倒装。' },
+      { q: 'It is Mary ______ helped me with my English.', o: ['which', 'whom', 'who', 'whose'], a: 2, e: '强调人 → that 或 who。"是玛丽帮我学英语"。' },
+      { q: '— I didn\'t go to the party yesterday. — Neither ______ I.', o: ['did', 'do', 'was', 'had'], a: 0, e: '"我也没去"→ Neither + 助动词 + 主语，didn\'t 的助动词是 did。' },
+      { q: 'Under no circumstances ______ the password to others.', o: ['you should tell', 'should you tell', 'you told', 'you will tell'], a: 1, e: 'Under no circumstances（决不）否定在句首 → 部分倒装 should you tell。' }
+    ]
+  },
+
+  // ---- 9. 主谓一致 ----
+  {
+    topic: '主谓一致',
+    insight: '★ 主谓一致三原则：<br>• <strong>语法一致</strong>：主语是单数用单数谓语，复数用复数<br>• <strong>意义一致</strong>：集合名词如 family 当作整体用单数，当作成员用复数<br>• <strong>就近原则</strong>：either...or / neither...nor / not only...but also → 谓语与<strong>靠近的名词</strong>一致<br>• 注意：with / together with / as well as → 谓语与<strong>前面</strong>的主语一致！',
+    questions: [
+      { q: 'The teacher together with his students ______ going to the museum.', o: ['is', 'are', 'were', 'have been'], a: 0, e: 'together with → 谓语与前面主语（The teacher）一致，用单数 is。' },
+      { q: 'Either you or he ______ wrong.', o: ['is', 'are', 'were', 'be'], a: 0, e: 'either...or → 就近原则，he 近 → 用单数 is。' },
+      { q: 'The police ______ looking for the lost child.', o: ['is', 'are', 'was', 'has been'], a: 1, e: 'police 本身是复数概念 → 用复数 are。' },
+      { q: 'Three years ______ a long time to wait.', o: ['is', 'are', 'were', 'have been'], a: 0, e: '表示时间/金钱/距离的复数名词作主语，视为一个整体 → 用单数 is。' },
+      { q: 'Neither he nor his friends ______ interested.', o: ['is', 'was', 'are', 'has been'], a: 2, e: 'neither...nor → 就近原则，his friends 近 → 用复数 are。' },
+      { q: 'My family ______ all music lovers.', o: ['is', 'are', 'was', 'has been'], a: 1, e: 'family 在此指"家庭成员"（复数概念）→ 用复数 are。' },
+      { q: 'Everyone in the class ______ hard.', o: ['study', 'studies', 'are studying', 'were studying'], a: 1, e: 'everyone / somebody / nobody → 不定代词作主语用单数谓语。' },
+      { q: 'The news ______ very exciting.', o: ['is', 'are', 'were', 'have been'], a: 0, e: 'news（消息）是不可数名词 → 用单数 is。' },
+      { q: 'Not only the students but also their teacher ______ the film.', o: ['enjoy', 'enjoys', 'are enjoying', 'have enjoyed'], a: 1, e: 'not only...but also → 就近原则，their teacher 近 → 用单数 enjoys。' },
+      { q: 'There ______ a book and two pens on the desk.', o: ['is', 'are', 'were', 'have been'], a: 0, e: 'There be 句型 → 就近原则，a book 近 → 用单数 is。' }
+    ]
+  },
+
+  // ---- 10. 构词法与核心词汇 ----
+  {
+    topic: '构词法与核心词汇',
+    insight: '★ 英语三大构词法：<br>• <strong>派生</strong>：加前缀/后缀改变词性或意义。<br>  - 名词后缀：-tion / -er / -ness / -ment<br>  - 形容词后缀：-ful / -less / -able / -ive<br>  - 副词后缀：-ly<br>  - 反义前缀：un- / dis- / im- / in-<br>• <strong>合成</strong>：two + way = two-way<br>• <strong>转换</strong>：water（n.水）→ water（v.浇水）',
+    questions: [
+      { q: 'The ______ of the new airport brought many jobs.', o: ['construct', 'construction', 'constructive', 'constructed'], a: 1, e: 'the + 名词，construct → construction（建造），-tion 是名词后缀。' },
+      { q: 'It is ______ to finish all the work in one day.', o: ['possible', 'impossible', 'possibly', 'possibility'], a: 1, e: 'im- 反义前缀 + possible → impossible（不可能的）。' },
+      { q: 'She is a very ______ person. She always helps others.', o: ['help', 'helper', 'helpful', 'helpless'], a: 2, e: '-ful 后缀 → helpful（乐于助人的）。注意辨析 helpful 与 helpless。"总是帮助别人"→ helpful。' },
+      { q: 'He made a ______ to win the game.', o: ['decide', 'decision', 'decisive', 'decidedly'], a: 1, e: 'make a + 名词 → decide（v.）→ decision（n.），-ion 名词后缀。' },
+      { q: 'The children are playing ______ in the yard.', o: ['happy', 'happiness', 'happily', 'happier'], a: 2, e: '修饰动词 playing → 用副词 happily（快乐地），-ly 副词后缀。' },
+      { q: 'I ______ with you on this point.', o: ['agree', 'disagree', 'agreement', 'disagreement'], a: 1, e: 'dis- 反义前缀 + agree → disagree（不同意）。' },
+      { q: 'Hard work is the key to ______.', o: ['succeed', 'success', 'successful', 'successfully'], a: 1, e: 'to 是介词，后接名词 → succeed（v.）→ success（n.）。' },
+      { q: 'She has a ______ of stamps.', o: ['collect', 'collection', 'collective', 'collector'], a: 1, e: 'a + 名词 → collection（收藏品）。' },
+      { q: 'The movie was so ______ that I fell asleep.', o: ['bored', 'boring', 'boredom', 'bore'], a: 1, e: '修饰"电影本身"令人无聊 → boring。bored 用来形容"人感到无聊"。' },
+      { q: 'We had a ______ discussion about the plan.', o: ['further', 'farther', 'farthest', 'furthest'], a: 0, e: 'further 除了表距离"更远"，还可表抽象意义"进一步的"。further discussion → "进一步讨论"。' }
+    ]
+  }
+];
+
+// ============================================================
+// 渲染逻辑
+// ============================================================
+const totalQ = DATA.reduce((s, t) => s + t.questions.length, 0);
+document.getElementById('totalCount').textContent = totalQ;
+
+// 存储用户答案: { topicIdx: { qIdx: selectedIdx } }
+const userAnswers = {};
+
+function renderTopics() {
+  const container = document.getElementById('topicsContainer');
+  container.innerHTML = '';
+  DATA.forEach((topic, tIdx) => {
+    if (!userAnswers[tIdx]) userAnswers[tIdx] = {};
+
+    const card = document.createElement('div');
+    card.className = 'topic';
+    card.id = 'topic-' + tIdx;
+
+    const hdr = document.createElement('div');
+    hdr.className = 'topic-header';
+    hdr.onclick = () => toggleTopic(tIdx);
+
+    const doneCount = Object.keys(userAnswers[tIdx]).length;
+    const totalInTopic = topic.questions.length;
+    hdr.innerHTML = `
+      <span>
+        <span class="num">${tIdx + 1}</span>
+        <span class="title">${topic.topic}</span>
+      </span>
+      <span class="status ${doneCount === totalInTopic ? 'done' : ''}" id="status-${tIdx}">
+        ${doneCount}/${totalInTopic}
+      </span>
+    `;
+
+    const body = document.createElement('div');
+    body.className = 'topic-body';
+    body.id = 'body-' + tIdx;
+
+    body.innerHTML = `<div class="insight">${topic.insight}</div>`;
+
+    topic.questions.forEach((q, qIdx) => {
+      const qDiv = document.createElement('div');
+      qDiv.className = 'q-item';
+      qDiv.id = `q-${tIdx}-${qIdx}`;
+
+      let optsHtml = '';
+      const labels = ['A', 'B', 'C', 'D'];
+      q.o.forEach((opt, oIdx) => {
+        const selected = userAnswers[tIdx][qIdx] === oIdx ? ' selected' : '';
+        optsHtml += `<span class="opt${selected}" data-opt="${oIdx}" onclick="selectOption(${tIdx},${qIdx},${oIdx})">${labels[oIdx]}. ${opt}</span>`;
+      });
+
+      qDiv.innerHTML = `
+        <div class="q-text"><span class="q-num">${qIdx + 1}</span>${q.q}</div>
+        <div class="options">${optsHtml}</div>
+        <div class="q-feedback" id="fb-${tIdx}-${qIdx}"></div>
+      `;
+      body.appendChild(qDiv);
+    });
+
+    card.appendChild(hdr);
+    card.appendChild(body);
+    container.appendChild(card);
+  });
+  updateProgress();
+}
+
+function toggleTopic(tIdx) {
+  const body = document.getElementById('body-' + tIdx);
+  body.classList.toggle('open');
+}
+
+function selectOption(tIdx, qIdx, oIdx) {
+  userAnswers[tIdx] = userAnswers[tIdx] || {};
+  // 如果已经选过同一个选项 → 取消选择
+  if (userAnswers[tIdx][qIdx] === oIdx) {
+    delete userAnswers[tIdx][qIdx];
+  } else {
+    userAnswers[tIdx][qIdx] = oIdx;
+  }
+
+  // 更新该题样式
+  const opts = document.querySelectorAll(`#q-${tIdx}-${qIdx} .opt`);
+  opts.forEach((el, i) => {
+    el.classList.remove('selected');
+    if (userAnswers[tIdx][qIdx] === i) el.classList.add('selected');
+  });
+
+  // 更新该模块状态
+  const done = Object.keys(userAnswers[tIdx]).length;
+  const total = DATA[tIdx].questions.length;
+  const statusEl = document.getElementById(`status-${tIdx}`);
+  statusEl.textContent = `${done}/${total}`;
+  statusEl.className = `status ${done === total ? 'done' : ''}`;
+
+  updateProgress();
+}
+
+function updateProgress() {
+  let totalDone = 0;
+  DATA.forEach((_, tIdx) => {
+    totalDone += Object.keys(userAnswers[tIdx] || {}).length;
+  });
+  document.getElementById('doneCount').textContent = totalDone;
+  const pct = (totalDone / totalQ) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+
+  const lockProgress = document.getElementById('lockProgress');
+  if (lockProgress) lockProgress.textContent = `${totalDone} / ${totalQ}`;
+
+  const btn = document.getElementById('gotoAnswerBtn');
+  if (totalDone === totalQ) {
+    btn.disabled = false;
+    btn.textContent = '📖 查看答案与解析';
+  } else {
+    btn.disabled = true;
+    btn.textContent = `🔒 完成全部 ${totalQ} 题后查看答案（已答 ${totalDone} 题）`;
+  }
+}
+
+// ============================================================
+// 答案与解析
+// ============================================================
+function renderAnswers() {
+  const container = document.getElementById('answersList');
+  container.innerHTML = '';
+  const labels = ['A', 'B', 'C', 'D'];
+
+  DATA.forEach((topic, tIdx) => {
+    const div = document.createElement('div');
+    div.className = 'ans-topic';
+    div.style.borderLeftColor = ['#667eea','#764ba2','#f06292','#ffb300','#43a047','#e53935','#8e24aa','#1e88e5','#00acc1','#ff6d00'][tIdx % 10];
+    let html = `<h3>${tIdx + 1}. ${topic.topic}</h3><div>`;
+    topic.questions.forEach((q, qIdx) => {
+      const correctLetter = labels[q.a];
+      const userAns = userAnswers[tIdx]?.[qIdx];
+      const userLetter = userAns !== undefined ? labels[userAns] : '—';
+      const isCorrect = userAns === q.a;
+      const mark = userAns === undefined ? '⚪' : (isCorrect ? '✅' : '❌');
+      html += `<span class="ans-row">${mark} 第${qIdx + 1}题 <span class="ans-letter">${correctLetter}</span>`;
+      if (userAns !== undefined) {
+        html += ` <span style="color:${isCorrect?'#43a047':'#e53935'}">（你选 ${userLetter}）</span>`;
+      }
+      html += `</span>`;
+    });
+    html += `</div><div class="ans-explanation">`;
+    topic.questions.forEach((q, qIdx) => {
+      html += `<strong>${qIdx + 1}.</strong> ${q.e}<br>`;
+    });
+    html += `</div></div>`;
+    div.innerHTML = html;
+    container.appendChild(div);
+  });
+}
+
+document.getElementById('gotoAnswerBtn').addEventListener('click', function() {
+  const totalDone = DATA.reduce((s, _, tIdx) => s + Object.keys(userAnswers[tIdx] || {}).length, 0);
+  if (totalDone < totalQ) return;
+  // 展开所有模块
+  DATA.forEach((_, tIdx) => {
+    document.getElementById('body-' + tIdx).classList.add('open');
+  });
+  // 解锁答案区
+  const sec = document.getElementById('answerSection');
+  sec.classList.remove('locked');
+  sec.classList.add('unlocked');
+  renderAnswers();
+  // 滚动到答案区
+  sec.scrollIntoView({ behavior: 'smooth' });
+});
+
+// ============================================================
+// 重置
+// ============================================================
+function resetAll() {
+  if (!confirm('确定要重置所有答案吗？所有已选答案将被清空。')) return;
+  DATA.forEach((_, tIdx) => {
+    userAnswers[tIdx] = {};
+    // 清除所有 selected
+    document.querySelectorAll(`#topic-${tIdx} .opt`).forEach(el => el.classList.remove('selected'));
+    document.querySelectorAll(`#topic-${tIdx} .q-feedback`).forEach(el => {
+      el.classList.remove('show','correct','wrong');
+      el.textContent = '';
+    });
+    const done = 0;
+    const total = DATA[tIdx].questions.length;
+    const statusEl = document.getElementById(`status-${tIdx}`);
+    if (statusEl) {
+      statusEl.textContent = `0/${total}`;
+      statusEl.className = 'status';
+    }
+  });
+  const sec = document.getElementById('answerSection');
+  sec.classList.add('locked');
+  sec.classList.remove('unlocked');
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================================
+// 启动
+// ============================================================
+renderTopics();
+</script>
+
+</body>
+</html>
